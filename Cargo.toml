@@ -1,0 +1,7 @@
+[workspace]
+members = [
+    "mathematica",
+    "api",
+    "discord_bot",
+]
+resolver = "2"
