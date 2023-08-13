@@ -1,19 +1,19 @@
-mod error_handler;
 mod commands;
 
+use anyhow::Error;
 use poise::serenity_prelude as serenity;
 use std::{env::var, time::Duration};
-use error_handler::on_error;
 
 pub struct Data {}
-pub type Error = Box<dyn std::error::Error + Send + Sync>;
 pub type Context<'a> = poise::Context<'a, Data, Error>;
-
 
 #[tokio::main]
 async fn main() {
+    let token = var("DISCORD_TOKEN").expect("Missing `DISCORD_TOKEN` env var");
+    let intents =
+        serenity::GatewayIntents::non_privileged() | serenity::GatewayIntents::MESSAGE_CONTENT;
     let options = poise::FrameworkOptions {
-        commands: vec![commands::help(), commands::evaluate()],
+        commands: vec![commands::help(), commands::eval()],
         prefix_options: poise::PrefixFrameworkOptions {
             prefix: Some("=".to_string()),
             additional_prefixes: vec![
@@ -23,12 +23,11 @@ async fn main() {
             edit_tracker: Some(poise::EditTracker::for_timespan(Duration::from_secs(3600))),
             ..Default::default()
         },
-        on_error: |error| Box::pin(on_error(error)),
         ..Default::default()
     };
 
     poise::Framework::builder()
-        .token(var("DISCORD_TOKEN").expect("Missing `DISCORD_TOKEN` env var"))
+        .token(token)
         .setup(move |ctx, _ready, framework| {
             Box::pin(async move {
                 println!("Logged in as {}", _ready.user.name);
@@ -37,9 +36,7 @@ async fn main() {
             })
         })
         .options(options)
-        .intents(
-            serenity::GatewayIntents::non_privileged() | serenity::GatewayIntents::MESSAGE_CONTENT,
-        )
+        .intents(intents)
         .run()
         .await
         .unwrap();

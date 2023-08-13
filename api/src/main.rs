@@ -1,9 +1,10 @@
 use axum::{extract::Query, routing::get, Router};
+use mathematica::OutputFormat;
 use std::collections::HashMap;
 
 async fn query(Query(params): Query<HashMap<String, String>>) -> String {
     let expression = params.get("expr").unwrap();
-    mathematica::evaluate(expression).unwrap()
+    mathematica::eval(expression.clone(), OutputFormat::Plaintext)
 }
 
 const ADDRESS: &str = "0.0.0.0:3000";

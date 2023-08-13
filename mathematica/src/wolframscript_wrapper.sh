@@ -12,7 +12,7 @@ while true ; do
             shift 2;;
         -f|--format)
             case "$2" in
-                "plaintex"|"tex") format=$2 ; shift 2 ;;
+                "plaintex"|"image") format=$2 ; shift 2 ;;
                                *) format="plaintex" ; shift 2 ;;
             esac ;;
         --) shift ; break ;;

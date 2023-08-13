@@ -1,22 +1,31 @@
-mod image_format;
-mod latex;
+use run_script::ScriptOptions;
 
-use anyhow::Result;
-use image_format::ImageFormat;
-use latex::TexFile;
-use std::{process::Command, path::PathBuf};
+const WOLFRAMSCRIPT_WRAPPER: &str = include_str!("wolframscript_wrapper.sh");
 
-const BINARY: &str = "wolframscript";
-pub const TEMP_FOLDER: &str = "/tmp";
+pub enum OutputFormat {
+    Plaintext,
+    Image,
+    Tex,
+}
+impl ToString for OutputFormat {
+    fn to_string(&self) -> String {
+        match self {
+            OutputFormat::Plaintext => "plaintex".to_string(),
+            OutputFormat::Image => "image".to_string(),
+            OutputFormat::Tex => "tex".to_string(),
+        }
+    }
+}
 
-/// Evaluate an expression and output as an image
-pub fn evaluate(expression: &str) -> Result<PathBuf> {
-    let mut mathematica = Command::new(BINARY);
-    mathematica
-        .args(["-c", expression])
-        .args(["-format", "TeX"]);
-    let output = mathematica.output().expect("Failed when trying to evaluate expression using mathematica");
-    let mut latex = TexFile::create_with_random_name(&output.stdout).expect("Failed trying to create latex file");
-    let generated_image_path = latex.create_img(ImageFormat::Png).expect("Failed to convert latex file to image");
-    Ok(generated_image_path)
+pub fn eval(expression: String, format: OutputFormat) -> String {
+    let options = ScriptOptions::new();
+    let args = vec![
+        "--code".to_string(),
+        expression,
+        "--format".to_string(),
+        format.to_string(),
+    ];
+    let (_, output, _) = run_script::run(WOLFRAMSCRIPT_WRAPPER, &args, &options)
+        .expect("Failed to evaluate expression");
+    output.trim().to_string()
 }
