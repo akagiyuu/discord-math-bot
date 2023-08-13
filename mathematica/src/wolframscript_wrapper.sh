@@ -25,15 +25,7 @@ then
     echo $(wolframscript -c "$code")
 else
     base_file_name=$(date +%s)
-
-    content=$(wolframscript -c "$code" -format TeX)
-    match="documentclass{article}"
-    replace="documentclass[border=2pt,varwidth]{standalone}"
-    content=${content/"$match"/"$replace"}
-    content="%${content#*%}"
-
-    echo "$content" > "$base_file_name.tex"
-    pdflatex "$base_file_name.tex" > /dev/null
+    wolframscript -c "$code" -format PDF > "$base_file_name.pdf"
     convert -density 300 $base_file_name.pdf -quality 90 -background white -alpha remove -alpha off "$base_file_name.png" > /dev/null
     echo "$base_file_name.png"
 fi
