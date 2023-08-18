@@ -2,4 +2,4 @@
 
 ## Requirement
 
-    - [wolframscript](https://www.wolfram.com/wolframscript/)
+- Wolfram script [wolframscript](https://www.wolfram.com/wolframscript/)
