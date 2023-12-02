@@ -1,6 +1,6 @@
 use crate::Data;
 use anyhow::{Error, Result};
-use mathematica::OutputFormat;
+use core::{OutputFormat, eval};
 use poise::serenity_prelude::AttachmentType;
 use std::path::Path;
 
@@ -15,7 +15,7 @@ pub async fn eval(
     ctx: Context<'_>,
     #[description = "A valid mathematica expression"] expression: String,
 ) -> Result<()> {
-    let result_image_path = mathematica::eval(expression, OutputFormat::Image);
+    let result_image_path = eval(expression, OutputFormat::Image);
     let result_image_abs_path = format!("/tmp/{}", result_image_path);
     ctx.send(|reply| {
         reply.embed(|embed| {

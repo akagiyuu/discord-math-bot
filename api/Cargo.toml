@@ -7,5 +7,5 @@ edition = "2021"
 
 [dependencies]
 axum = "0.6.20"
-mathematica = { path = "../mathematica" }
+core = { path = "../core" }
 tokio = { version = "1.30.0", features = ["full"] }

@@ -1,6 +1,6 @@
 [workspace]
 members = [
-    "mathematica",
+    "core",
     "api",
     "discord_bot",
 ]

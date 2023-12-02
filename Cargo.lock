@@ -52,7 +52,7 @@ name = "api"
 version = "0.1.0"
 dependencies = [
  "axum",
- "mathematica",
+ "core",
  "tokio",
 ]
 
@@ -227,6 +227,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "core"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "run_script",
+]
+
+[[package]]
 name = "core-foundation-sys"
 version = "0.8.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -344,7 +352,7 @@ name = "discord_bot"
 version = "0.1.0"
 dependencies = [
  "anyhow",
- "mathematica",
+ "core",
  "poise",
  "tokio",
 ]
@@ -709,14 +717,6 @@ name = "matchit"
 version = "0.7.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ed1202b2a6f884ae56f04cff409ab315c5ce26b5e58d7412e484f01fd52f52ef"
-
-[[package]]
-name = "mathematica"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "run_script",
-]
 
 [[package]]
 name = "memchr"
